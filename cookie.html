@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    var CookieUtil = {
+        // 设置cookie
+        set: function (name, value, expires, path, domain, secure) {
+            var cookieText = ''
+            // encodeURIComponent可把字符串作为 URI 组件进行编码。
+            cookieText += encodeURIComponent(name) + '=' + encodeURIComponent(value)
+            if (expires >= 0) {
+                var day = new Date()
+                day.setTime(day.getTime() + expires * 24 * 60 * 60 * 1000)
+                cookieText += '; expires=' + day.toGMTString()
+            }
+            if (path) {
+                cookieText += '; path=' + path
+            }
+            if (domain) {
+                cookieText += '; domain=' + domain
+            }
+            if (secure) {
+                cookieText += '; secure=' + secure
+            }
+        },
+        // 获取cookie
+        get: function (name) {
+            var cookieName = encodeURIComponent(name) + '='
+            var cookieStart = document.cookie.indexOf(cookieName)
+            var cookieValue = ''
+            if (cookieStart > -1) {
+                var cookieEnd = document.cookie.indexOf(';', cookieStart)
+                if (cookieStart < 0) {
+                    cookieEnd = document.cookie.length
+                }
+                cookieValue = decodeURIComponent(document.cookie.substring(cookieStart +  cookieName.length, cookieEnd))
+            }
+            return cookieValue
+        },
+        //  删除cookie
+        unset: function (name) {
+            this.set(name, '', 0)
+        }
+    }
+
+</script>
+</body>
+</html>
